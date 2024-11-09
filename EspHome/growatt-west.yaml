@@ -1,7 +1,7 @@
 substitutions:
-  devicename: growatt-west
+  devicename: growatt13kw
   mqqt_topic: 'sensors'
-  device_unique_id: west
+  device_unique_id: growatt13kw
 
 esphome:
   name: $devicename
@@ -14,14 +14,17 @@ logger:
   baud_rate: 0
   
 # Enable Home Assistant API
-#api:
+api:
+  encryption:
+    key: "xxxxxxxxxxxxxxxxxxxxxxxx"
 
 # Enable ota. Uncomment passwort if you need
 ota:
-#  password: !secret ota_password
+- platform: esphome
+  password: !secret ota
 
 # uncomment, if you use dallas sensor
-#dallas:
+#dallas: #dallas conmponent is replace by the "one_wire" TODO!
 #  - pin: GPIO04
 
 mqtt:
@@ -41,22 +44,29 @@ mqtt:
 wifi:
   ssid: !secret wifi_ssid
   password: !secret wifi_password
+  manual_ip:
+    # Set this to the IP of the ESP
+    static_ip: xx.xx.xx.xx
+    # Set this to the IP address of the router. Often ends with .1
+    gateway: xx.xx.xx.xx
+    # The subnet of the network. 255.255.255.0 works for most home networks.
+    subnet: 255.255.255.0
 
   # Enable fallback hotspot (captive portal) in case wifi connection fails
   ap:
-    ssid: "Growatt-Test Fallback Hotspot"
-    password: "zGmhBwfjghjFJYc2l"
+    ssid: "Growatt13kW Fallback Hotspot"
+    password: "xxxxxxxx"
 
 captive_portal:
   
 uart:
-  - id: uart1
+#  - id: uart1
     baud_rate: 9600
     tx_pin: TX
     rx_pin: RX
 
 modbus:
-  uart_id: uart1
+#  uart_id: uart1
   flow_control_pin: D0
 
 sensor:
@@ -112,5 +122,5 @@ sensor:
 # [D][dallas.sensor:084]:     0x1c0000031edd2a28
 # --------------------END OF DESCRIPTION -------------------------------
 #  - platform: dallas
-#    address: 0x1c0000031edd2a28    
+#    address: 0xa60000001ebd8428    
 #    name: "Growatt USB Temperature"
